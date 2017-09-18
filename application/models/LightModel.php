@@ -76,11 +76,11 @@ class LightModel extends CI_Model {
   }
 
   public function get_repair_light_by_city($city){
-
     $this->db->select("l.status,l.lat,l.lng,l.height,l.id,l.name,t.city,t.name as town_name,l.town_id,l.mtime");
     $this->db->join("town t","l.town_id = t.id");
     $this->db->where("t.city",$city);
-    $this->db->where("status","1");
+    $this->db->where_in("status",["1","2"]);
+    $this->db->order_by("status","asc");
     return ($this->db->get($this->_table." l")->result());
   }
 
@@ -98,13 +98,31 @@ class LightModel extends CI_Model {
 
     $this->db->set("status","0");
     $this->db->where_in("id",$ids);
+    $q = $this->db->get($this->_table);
+
+    $lights = $q->result();
+
+    $this->db->set("status","0");
+    $this->db->where_in("id",$ids);
     $this->db->where("status","1");
     $this->db->update($this->_table);
+
+    $this->db->set("status",3);
+    $this->db->set("mtime","now() at time zone 'utc'",false);
+    $this->db->where_in("light_id",$ids);
+    $this->db->update("light_report");
+
+    foreach($lights as $light){
+      $this->db->insert("light_log",["light_id"=>$light->id,"text"=>"修好了"]);
+    }
+
   }
 
   public function insert_report($data){
     $this->db->insert($this->_table_light_report,$data);
-    return $this->db->insert_id();
+    $id = $this->db->insert_id();
+    $this->db->insert("light_log",["light_id"=> $id ,"text"=>"被回報為壞掉"]);
+    return ;
   }
 
   public function get_city_counts($city){
@@ -156,17 +174,20 @@ class LightModel extends CI_Model {
     }
 
 
-    if($status == "1"){
+    if($status == "1" || $status == "2"){
+
       $this->db->set("status",1);
       $this->db->set("mtime","now()",false);
       $this->db->where("status",0);
       $this->db->where("light_id",$q->light_id);
       $this->db->update($this->_table_light_report);
 
-      $this->db->set("status",1);
+      $this->db->set("status",intval($status));
       $this->db->set("mtime","now()",false);
       $this->db->where("id",$q->light_id);
       $this->db->update($this->_table);
+      
+      $this->db->insert("light_log",["light_id"=>$q->light_id,"text"=>"已確認報修(".($status=="1" ?"公所廠商":"縣府廠商").")"]);
 
     }else if($status == "0"){
       $this->db->set("status",2);
@@ -174,6 +195,8 @@ class LightModel extends CI_Model {
       $this->db->where("status",0);
       $this->db->where("light_id",$q->light_id);
       $this->db->update($this->_table_light_report);
+
+      $this->db->insert("light_log",["light_id"=>$q->light_id,"text"=>"確認為非報修"]);
     }
 
   }

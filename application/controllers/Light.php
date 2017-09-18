@@ -55,7 +55,7 @@ class Light extends MY_Controller {
 			return show_404();
 		}	
 
-		$fields= ["name","contact","comment","email"];
+		$fields= ["name","contact","comment","email","led_no"];
 
 		$data = ["light_id" => $point_id,"status" => 0];
 		foreach($fields as $key){

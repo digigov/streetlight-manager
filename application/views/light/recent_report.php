@@ -11,18 +11,15 @@
     <tr>
       <td>報修時間</td>    
       <td>處理情形 </td>
-      <td>目前系統上路燈狀態 </td>
       <td>報修路燈編號</td>
       <td>最後更新時間</td>
     </tr>
     <?php 
-    $report_status = ["0" => "回報確認中" , "1" => "已確認送修" , "2" => "無法確認問題或重複回報"];
-    $count_status = ["0" => "正常運作" , "1" => "維修中" , "2" => "已停用"];
+    $report_status = ["0" => "回報確認中" , "1" => "已確認送修" , "2" => "無法確認問題或重複回報","3" => "已修復"];
     foreach($reports as $report){ ?>
     <tr>
       <td><?=_date_format_utc($report->ctime)?></td>    
       <td><?=h($report_status[$report->status])?></td>
-      <td><?=h($count_status[$report->light_status])?></td>
       <td><?=h($report->light_name)?></td>
       <td><?=_date_format_utc($report->mtime)?></td>   
     </tr>

@@ -78,6 +78,11 @@ class Light extends MY_ADMIN_Controller {
 
     $ids = $this->input->post("ids"); //array
     $inputs = [];
+
+    if(empty($ids)){
+      die("wrong input ");
+    }
+
     foreach($ids as $id){
       $inputs[] = $id;
     }
@@ -93,11 +98,44 @@ class Light extends MY_ADMIN_Controller {
           "city" => $unCity,
           "lights" => $lights
         ] );
-    }else{
+    }else if($this->input->post("action") == "3"){
+
+      header('Content-type:application/force-download'); //告訴瀏覽器 為下載 
+      header('Content-Transfer-Encoding: Binary'); //編碼方式
+      header('Content-Disposition:attachment;filename=維修單- '.date("Y.m.d").".xlsx"); //檔名 
+      return $this->_export_xlsx($unCity,$lights);
+
+    }else if($this->input->post("action") == "2"){
+
       $lights = $this->lightModel->fix_light_by_ids($unCity,$inputs);
       redirect("admin/light/repair");
+    }else{
+      die("未知的選項");
     }
     
+
+  }
+
+  public function _export_xlsx($city,$lights){
+    require(__DIR__."/../../../vendor/autoload.php");
+    $objPHPExcel = PHPExcel_IOFactory::load(__DIR__."/../../../public/excel/repair_reports.xlsx");
+
+
+    $objPHPExcel->getActiveSheet()->setCellValue('G1', 
+        (date("Y")-1911)."年".(date("m"))."月".date("d")."日交大發"
+      );
+
+    foreach($lights as $ind => $light){
+      $objPHPExcel->getActiveSheet()->setCellValue('A'.($ind+3), 
+        $light->town_name."/".$light->name
+      );
+      // $objPHPExcel->getActiveSheet()->setCellValue('B'.($ind+2), 
+        // $light->comment
+      // );
+    }
+    $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+    $objWriter->save('php://output');
+    // $objPHPExcel = new PHPExcel();
 
   }
 

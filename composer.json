@@ -4,7 +4,8 @@
 	"type": "project",
 	"require": {
 		"php": ">=5.2.4",
-    "facebook/php-sdk-v4" : "~5.0"
+    "facebook/php-sdk-v4" : "~5.0",
+		"phpoffice/phpexcel": "^1.8"
 	},
 	"suggest": {
 		"paragonie/random_compat": "Provides better randomness in PHP 5.x"

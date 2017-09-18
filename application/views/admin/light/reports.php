@@ -11,14 +11,15 @@
       <td>處理情形 </td>
       <td>目前系統路燈狀態 </td>
       <td>報修路燈編號</td>
+      <td> LED 編號</td>
       <td>報修人</td>
       <td>報修描述</td>
       <td>處理結果</td>
     </tr>
     <?php 
-    $count_status = ["0" => "正常運作" , "1" => "維修中" , "2" => "已停用"];
+    $count_status = ["0" => "正常運作" , "1" => "維修中(公所)" , "2" => "維修中(縣府廠商)","3" => "已停用"];
 
-    $report_status = ["0" => "待處理" , "1" => "已確認報修" , "2" => "無法確認問題"];
+    $report_status = ["0" => "待處理" , "1" => "已確認報修" , "2" => "無法確認問題" , "3" => "已修復"];
 
     foreach($reports as $report){ ?>
     <tr>
@@ -26,11 +27,13 @@
       <td><?=h($report_status[$report->status])?></td>
       <td><?=h($count_status[$report->light_status])?></td>
       <td><?=h($report->light_name)?></td>
+      <td><?=h($report->led_no)?></td>
       <td><?=h($report->name)?></td>
       <td><?=h($report->comment)?></td>
       <td>
         <?php if($report->status =="0"){ ?>
         <a href="<?=site_url("admin/light/set_report_status/".$report->id."/1")?>" class="btn btn-default">請廠商處理</a>
+        <a href="<?=site_url("admin/light/set_report_status/".$report->id."/2")?>" class="btn btn-default">請縣府LED廠商處理</a>
         <a href="<?=site_url("admin/light/set_report_status/".$report->id."/0")?>" class="btn btn-default">設為無法確認問題</a>
         <?php } ?>
       </td>

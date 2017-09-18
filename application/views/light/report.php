@@ -56,17 +56,23 @@
 
           </td>
         </tr>
-
         <tr>
+          <td>LED 燈號(選填) </td>
+          <td><input type="text" tabindex="4"  name="led_no" />
+          <span style="color:gray">如果是 LED 燈您知道燈號，請協助我們填寫。</span>
+
+          </td>
+        </tr>
+        <!-- <tr>
           <td>照片 (選填) </td>
           <td><input type="file" name="img" />
           <span style="color:gray">若您有對瞭解路燈現場問題有幫助的照片，歡迎附上並在回報欄位說明。</span>
 
           </td>
-        </tr>
+        </tr> -->
         <tr>
           <td>問題回報與附註</td>
-          <td><textarea tabindex="4" style='width:100%' rows="5" name="comment" ></textarea>
+          <td><textarea tabindex="5" style='width:100%' rows="5" name="comment" ></textarea>
             <span style="color:gray">
               狀況描述、照片說明及其他與路燈相關的訊息
             </span>

@@ -27,7 +27,7 @@
         <td><label><input checked type="checkbox" id="chkAll" />全選</label></td>
       </tr>
       <?php 
-      $count_status = ["0" => "正常運作" , "1" => "維修中" , "2" => "已停用"];
+      $count_status = ["0" => "正常運作" , "1" => "維修中(公所)" , "2" => "維修中(縣府廠商)","3" => "已停用"];
       $report_status = ["0" => "待處理" , "1" => "已確認報修" , "2" => "無法確認問題"];
 
       foreach($lights as $light){ ?>
@@ -36,7 +36,7 @@
         <td><?=h($light->name)?></td>
         <td><?=h($light->town_name)?></td>
         <td><?=_date_format_utc($light->mtime)?></td>
-        <td><label><input checked class="chks" type="checkbox" name="ids[]" value="<?=h($light->id)?>" /> 選擇</label></td>
+        <td><label><input <?=$light->status=="2" ?"":"checked"?> class="chks" type="checkbox" name="ids[]" value="<?=h($light->id)?>" /> 選擇</label></td>
       </tr>
       <?php } ?>
     </table>
@@ -44,7 +44,9 @@
     
     <p>操作：
     <label><input type="radio" checked name="action" value="1" /> 下載 gdb 檔</label>
+    <label><input type="radio" name="action" value="3" /> 下載維修單 </label>
     <label><input type="radio" name="action" value="2" /> 設定為修好 </label>
+
     </p>
     <input type="submit" value="送出" />
   </form>
