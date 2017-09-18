@@ -109,6 +109,7 @@ class LightModel extends CI_Model {
 
     $this->db->set("status",3);
     $this->db->set("mtime","now() at time zone 'utc'",false);
+    $this->db->where("status","1");
     $this->db->where_in("light_id",$ids);
     $this->db->update("light_report");
 
