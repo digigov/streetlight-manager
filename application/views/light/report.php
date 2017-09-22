@@ -111,7 +111,7 @@
 
     // var center = [25.043325,121.5195076];
     var point = window.points[0];
-    var center = [point.lng,point.lat];
+    var center = [point.lat,point.lng];
 
     var mymap = L.map('mapid',{maxZoom:18,minZoom:10}).setView(center, 14);
     
@@ -119,7 +119,7 @@
     var markers = L.markerClusterGroup({disableClusteringAtZoom:17,spiderfyOnMaxZoom:false});
 
     $.each(window.points,function(ind,point){
-        var marker = L.marker([point.lng,point.lat],{title:point.name});
+        var marker = L.marker([point.lat,point.lng],{title:point.name});
         marker.bindPopup('<h1>'+point.name+'</h1><p>所屬：'+point.city+point.town_name+'</p>');
 
         markers.addLayer(marker);
