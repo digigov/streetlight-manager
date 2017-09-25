@@ -234,6 +234,13 @@ class LightModel extends CI_Model {
   }
 
 
+  public function get_all_towns(){
+    $this->db->select("name,city");
+
+    $q = $this->db->get("town");
+    return $q->result();
+  }
+
   public function get_recent_report(){
     $this->db->select("l.name as light_name,l.status as light_status,r.*");
     

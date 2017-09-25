@@ -31,9 +31,13 @@
 <?php } ?>
 
 <script>
+  window.towns = <?=json_encode($towns)?>;
   window.points = <?=json_encode($points)?>;
   if(window.points.push == null){
     window.points = [];
+  }
+  if(window.towns.push == null){
+    window.towns = [];
   }
 </script>
 <div id="container" class="container">
@@ -238,9 +242,20 @@
         title:point.name,
         icon:greenIcon
       });
-      temp.bindPopup('<a href="">新增路燈</a>');
+
+
+
+      temp.bindPopup(['<form action="/admin/light/adding_point" method="POST" target="_blank">',
+          '<p>請選擇村里 <select>' ,
+          towns.map((t)=>"<option>"+t.name+"</option>").join(""),
+          '</select></p>',
+          '<p>請輸入燈號 <input type="text" /></p>',
+          '<p><button>送出</button></p>'
+        ].join(""));
       temp.addTo(mymap);
     });
+
+
 
   </script>
   
