@@ -28,7 +28,8 @@ class Light extends MY_ADMIN_Controller {
   public function point_list(){
     $this->load->view('admin/light/point_list',
       [
-        "points" => $this->lightModel->get_all_for_map( )
+        "points" => $this->lightModel->get_all_for_map( ),
+        "towns" => $this->lightModel->get_all_towns()
       ] );
     session_write_close();    
   }

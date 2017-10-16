@@ -104,7 +104,7 @@ class LightModel extends CI_Model {
 
     $this->db->set("status","0");
     $this->db->where_in("id",$ids);
-    $this->db->where("status","1");
+    $this->db->where_in("status",["1","2"]);
     $this->db->update($this->_table);
 
     $this->db->set("status",3);
