@@ -66,6 +66,14 @@ class LightModel extends CI_Model {
     return $q->result();
   }
 
+  public function get_all_special_point_status(){
+    $this->db->select("l.status,l.id");
+    $this->db->where("status","<>",0);
+    $q = $this->db->get($this->_table." l");
+
+    return $q->result();
+  }
+
   public function get($id){
 
     $this->db->select("l.lat,l.lng,l.height,l.id,l.name,t.city,t.name as town_name,l.town_id");

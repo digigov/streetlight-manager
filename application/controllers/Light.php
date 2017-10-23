@@ -24,9 +24,32 @@ class Light extends MY_Controller {
 	}
 
 	public function json_pointers(){
-
+		$this->load->driver('cache', array('adapter' => 'apc', 'backup' => 'file'));
 		$js_points = [];
-		$points = $this->lightModel->get_all_for_map();
+
+		$points = null;
+ 		
+		if ( ! $points = $this->cache->get('points'))
+		{
+			$points = $this->lightModel->get_all_for_map();		
+				// 過 5 分鐘後會存到快取
+			$this->cache->save('points', $points, 60 * 60);
+		}
+
+		$status = $this->lightModel->get_all_special_point_status();
+		$map = [];
+		foreach($status as $s){
+			$map[$s->id] = $s->status;
+		}
+
+		foreach($points as $p){
+			if(!isset($map[$p->id])){
+				$p->status = 0;
+			}else{
+				$p->status = $map[$p->id];
+			}
+		}
+
 		foreach ($points as $p){
 			$js_points[] = [$p->id,$p->name,$p->lat,$p->lng,$p->city,$p->status,$p->reporting_count];
 		}
