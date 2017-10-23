@@ -17,10 +17,28 @@ class Light extends MY_Controller {
 	public function map()
 	{
 		$this->load->view('light/map',[
-			"points" => $this->lightModel->get_all_for_map(),
+			// "points" => $js_points,
 			"last_report_update_time" => $this->lightModel->get_last_report_update_time()
 		]);
 		session_write_close();
+	}
+
+	public function json_pointers(){
+
+		$js_points = [];
+		$points = $this->lightModel->get_all_for_map();
+		foreach ($points as $p){
+			$js_points[] = [$p->id,$p->name,$p->lat,$p->lng,$p->city,$p->status,$p->reporting_count];
+		}
+		
+		header('Access-Control-Allow-Origin: *');
+		header('Content-Type: application/json');
+
+		die(json_encode([
+			"isSuccess" => true,
+			"data"=>$js_points
+		]));
+		
 	}
 
 	public function recent_report(){

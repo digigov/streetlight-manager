@@ -10,10 +10,17 @@ class AccountModel extends CI_Model {
 
   public function login($acc,$pwd){
     $this->db->where("acc",$acc);
-    $this->db->where("pwd",$pwd);
-
+    // $this->db->where("pwd",$pwd);
     $u = $this->db->get($this->_table);
-    return array_first_item($u->result());
+
+    $res = $u->result();
+    foreach($res as $user){
+      if(password_verify($pwd,$user->pwd)){
+        return $user;
+      }
+    }
+    return null;
+
   }
 
   

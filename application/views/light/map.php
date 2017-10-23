@@ -30,17 +30,12 @@
   </style>
 <?php } ?>
 
-<script>
-  window.points = <?=json_encode($points)?>;
-  if(window.points.push == null){
-    window.points = [];
-  }
-</script>
 <div id="container" class="container">
   <h1 style="text-align:center;"> 路燈清單</h1>
   <div class="alert alert-info">
-    目前測試中，僅開放鹿草鄉資料。
+    目前測試中，僅開放鹿草鄉與水上鄉資料。
   </div>
+  <p id="waiting" class="alert alert-info">請稍後，資料載入中....</p>
 
   <p>燈號搜尋：<input type="text" name="search" /></p>
   
@@ -67,85 +62,110 @@
 
   <script>
 
-    // var center = [25.043325,121.5195076];
-    var point = window.points[0];
-    var center = [point.lat,point.lng];
-
-    var mymap = L.map('mapid',{maxZoom:18,minZoom:12}).setView(center, 12);
+    var getPoint = function(ary){
+      return {
+        id:ary[0],
+        name:ary[1],
+        lat:ary[2],
+        lng:ary[3],
+        city:ary[4],
+        status:ary[5],
+        reporting_count:ary[6]
+      }
+    };
     
 
-    var markers = L.markerClusterGroup({disableClusteringAtZoom:17,spiderfyOnMaxZoom:false});
-
+    var center =  [23.413554,120.372697];
+    
+    var mymap = L.map('mapid',{maxZoom:18,minZoom:12}).setView(center, 12);
     var autocompletes = [];
-    $.each(window.points,function(ind,point){
 
-      if(point.status == 0){
+    
+    $.get("/light/json_pointers",function(res){
 
-        if(point.reporting_count > 0 ){
+      if(!res.isSuccess || !res.data){
+        $("#waiting").text("載入失敗");
+        return true;
+      }
+
+      $("#waiting").remove();
+
+      var markers = L.markerClusterGroup({disableClusteringAtZoom:17,spiderfyOnMaxZoom:false});
+
+      var points = res.data;
+      var point = getPoint(points[0]);
+      $.each(points,function(ind,point_ary){
+        var point = getPoint(point_ary);
+        if(point.status == 0){
+
+          if(point.reporting_count > 0 ){
+            var redIcon = new L.Icon({
+              iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-yellow.png',
+              shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+              iconSize: [25, 41],
+              iconAnchor: [12, 41],
+              popupAnchor: [1, -34],
+              shadowSize: [41, 41]
+            });
+
+            var marker = L.marker([point.lat,point.lng],{icon:redIcon,title:point.name});
+            marker.bindPopup('<h1>'+point.name+'</h1><p>所屬：'+point.city +'</p><p style="color:red;">已被回報，尚待確認。</p>'+
+              '<a target="_blank" href="<?=site_url('light/report/')?>/'+point.id+'">我也要回報這個路燈</a><p></p>');
+            
+            // markers.addLayer(marker);
+            mymap.addLayer(marker);
+          }else{
+            var marker = L.marker([point.lat,point.lng],{title:point.name});
+            marker.bindPopup('<h1>'+point.name+'</h1><p>所屬：'+point.city+'</p>'+
+              '<a target="_blank" href="<?=site_url('light/report/')?>/'+point.id+'">回報路燈問題</a><p></p>');
+            markers.addLayer(marker);          
+          }
+
+        }else{
           var redIcon = new L.Icon({
-            iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-yellow.png',
+            iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
             shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
             iconSize: [25, 41],
             iconAnchor: [12, 41],
             popupAnchor: [1, -34],
             shadowSize: [41, 41]
           });
-
           var marker = L.marker([point.lat,point.lng],{icon:redIcon,title:point.name});
-          marker.bindPopup('<h1>'+point.name+'</h1><p>所屬：'+point.city+point.town_name+'</p><p style="color:red;">已被回報，尚待確認。</p>'+
-            '<a target="_blank" href="<?=site_url('light/report/')?>/'+point.id+'">我也要回報這個路燈</a><p></p>');
+          marker.bindPopup('<h1>'+point.name+'</h1><p>所屬：'+point.city+'</p><p style="color:red;">路燈報修中</p>');
           
           // markers.addLayer(marker);
           mymap.addLayer(marker);
-        }else{
-          var marker = L.marker([point.lat,point.lng],{title:point.name});
-          marker.bindPopup('<h1>'+point.name+'</h1><p>所屬：'+point.city+point.town_name+'</p>'+
-            '<a target="_blank" href="<?=site_url('light/report/')?>/'+point.id+'">回報路燈問題</a><p></p>');
-          markers.addLayer(marker);          
         }
+        point.marker = marker;
+        autocompletes.push({label:
+          point.name + " - " + point.city
+        ,value:point});      
+      });
 
-      }else{
-        var redIcon = new L.Icon({
-          iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
-          shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-          iconSize: [25, 41],
-          iconAnchor: [12, 41],
-          popupAnchor: [1, -34],
-          shadowSize: [41, 41]
-        });
-        var marker = L.marker([point.lat,point.lng],{icon:redIcon,title:point.name});
-        marker.bindPopup('<h1>'+point.name+'</h1><p>所屬：'+point.city+point.town_name+'</p><p style="color:red;">路燈報修中</p>');
-        
-        // markers.addLayer(marker);
-        mymap.addLayer(marker);
-      }
-      point.marker = marker;
-      autocompletes.push({label:
-        point.name + " - " + point.city + point.town_name
-      ,value:point});      
+      // debugger;
+
+      mymap.addLayer(markers);
+
     });
 
-    // debugger;
     $( "[name=search]" ).autocomplete({
-      minLength: 1,
-      delay: 0 ,
-      source: function(req,res){
-        res( $.grep( autocompletes, function( item ){
-            return item.label.indexOf(req.term) != -1;
-        }).slice(0,100) );
-      },
-      select: function( event, ui ) {
-        mymap.setView(ui.item.value.marker.getLatLng(),18);
-        ui.item.value.marker.openPopup();
-        return false;
-      }
-    });
-
-    mymap.addLayer(markers);
+        minLength: 1,
+        delay: 0 ,
+        source: function(req,res){
+          res( $.grep( autocompletes, function( item ){
+              return item.label.indexOf(req.term) != -1;
+          }).slice(0,100) );
+        },
+        select: function( event, ui ) {
+          mymap.setView(ui.item.value.marker.getLatLng(),18);
+          ui.item.value.marker.openPopup();
+          return false;
+        }
+      });
 
     var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-}).addTo(mymap);
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(mymap);
 
     // var ggl = new L.Google();
     var roads = L.gridLayer.googleMutant({

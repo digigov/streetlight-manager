@@ -41,7 +41,7 @@
 
     foreach($reports as $report){ ?>
     <tr>
-      <td><?=_date_format_utc($report->ctime)?></td>    
+      <td><?=_date_format_utc($report->created_at)?></td>    
       <td><?=h($report_status[$report->status])?></td>
       <td><?=h($count_status[$report->light_status])?></td>
       <td><?=h($report->light_name)?></td>

@@ -76,7 +76,7 @@ class LightModel extends CI_Model {
   }
 
   public function get_repair_light_by_city($city){
-    $this->db->select("l.status,l.lat,l.lng,l.height,l.id,l.name,t.city,t.name as town_name,l.town_id,l.mtime");
+    $this->db->select("l.status,l.lat,l.lng,l.height,l.id,l.name,t.city,t.name as town_name,l.town_id,l.updated_at");
     $this->db->join("town t","l.town_id = t.id");
     $this->db->where("t.city",$city);
     $this->db->where_in("status",["1","2"]);
@@ -86,7 +86,7 @@ class LightModel extends CI_Model {
 
   public function get_repair_light_by_ids_city($city,$ids){
 
-    $this->db->select("l.status,l.lat,l.lng,l.height,l.id,l.name,t.city,t.name as town_name,l.town_id,l.mtime");
+    $this->db->select("l.status,l.lat,l.lng,l.height,l.id,l.name,t.city,t.name as town_name,l.town_id,l.updated_at");
     $this->db->join("town t","l.town_id = t.id");
     $this->db->where("t.city",$city);
     $this->db->where_in("l.id",$ids);
@@ -108,7 +108,7 @@ class LightModel extends CI_Model {
     $this->db->update($this->_table);
 
     $this->db->set("status",3);
-    $this->db->set("mtime","now() at time zone 'utc'",false);
+    $this->db->set("updated_at","now() at time zone 'utc'",false);
     $this->db->where("status","1");
     $this->db->where_in("light_id",$ids);
     $this->db->update("light_report");
@@ -143,8 +143,8 @@ class LightModel extends CI_Model {
     $this->db->join($this->_table." l"," l.id = r.light_id");
     $this->db->join("town t","l.town_id = t.id");
     $this->db->where("t.city",$city);
-    $this->db->where("r.ctime > (current_date - interval '90 days') ");    
-    $this->db->order_by("r.ctime desc");
+    $this->db->where("r.created_at > (current_date - interval '90 days') ");    
+    $this->db->order_by("r.created_at desc");
     $q = $this->db->get($this->_table_light_report." r");
 
 
@@ -158,7 +158,7 @@ class LightModel extends CI_Model {
     $this->db->join("town t","l.town_id = t.id");
     $this->db->where("t.city",$city);
     $this->db->where("r.status",0);
-    $this->db->order_by("r.ctime desc");
+    $this->db->order_by("r.created_at desc");
     $q = $this->db->get($this->_table_light_report." r");
 
 
@@ -178,13 +178,13 @@ class LightModel extends CI_Model {
     if($status == "1" || $status == "2"){
 
       $this->db->set("status",1);
-      $this->db->set("mtime","now()",false);
+      $this->db->set("updated_at","now()",false);
       $this->db->where("status",0);
       $this->db->where("light_id",$q->light_id);
       $this->db->update($this->_table_light_report);
 
       $this->db->set("status",intval($status));
-      $this->db->set("mtime","now()",false);
+      $this->db->set("updated_at","now()",false);
       $this->db->where("id",$q->light_id);
       $this->db->update($this->_table);
       
@@ -192,7 +192,7 @@ class LightModel extends CI_Model {
 
     }else if($status == "0"){
       $this->db->set("status",2);
-      $this->db->set("mtime","now()",false);
+      $this->db->set("updated_at","now()",false);
       $this->db->where("status",0);
       $this->db->where("light_id",$q->light_id);
       $this->db->update($this->_table_light_report);
@@ -203,7 +203,7 @@ class LightModel extends CI_Model {
   }
 
   public function get_last_report_update_time(){
-    $this->db->select("max(mtime) as max_time");
+    $this->db->select("max(updated_at) as max_time");
     $q = $this->db->get($this->_table_light_report);
     return array_first_item($q->result())->max_time;
   }
@@ -242,14 +242,14 @@ class LightModel extends CI_Model {
   }
 
   public function get_recent_report(){
-    $this->db->select("l.name as light_name,l.status as light_status,r.*");
+    $this->db->select("l.name as light_name,l.status as light_status,r.*,t.city");
     
     $this->db->join($this->_table." l"," l.id = r.light_id");
     $this->db->join("town t","l.town_id = t.id");
-    $this->db->where("r.mtime > (current_date - interval '30' day)",null,false);
+    $this->db->where("r.updated_at > (current_date - interval '30' day)",null,false);
     $this->db->or_where("r.status",0);
 
-    $this->db->order_by("r.ctime desc");
+    $this->db->order_by("r.created_at desc");
 
     $q = $this->db->get($this->_table_light_report." r");
     return $q->result();

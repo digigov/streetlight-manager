@@ -20,6 +20,7 @@ class Dev extends MY_Controller {
    */
   public function load()
   {
+    
     session_write_close();
     $lucao = file_get_contents(__DIR__."/../../data/lucao.geojson");
 
@@ -36,13 +37,13 @@ class Dev extends MY_Controller {
       }
       $name = $light->properties->name;
 
-      $ctime = null;
+      $created_at = null;
       if(isset($light->properties->cmt)){
-        $ctime = $light->properties->cmt;
+        $created_at = $light->properties->cmt;
       }
 
       if(isset($light->properties->time)){
-        $ctime = $light->properties->time;
+        $created_at = $light->properties->time;
       }
 
       $type = null;
@@ -54,17 +55,17 @@ class Dev extends MY_Controller {
       // ["鹿東", "後寮", "鹿草", "豊稠", "西井", "重寮", "施家", "下潭", "光潭", "碧潭", "竹山", "松竹", "三角", "後堀", "下麻"] 
 
       $this->load->model("lightModel");
-      if($ctime == $name || $ctime == "道路" || $ctime =="後塘國小"){
-        $ctime = null;
-        if($ctime == "後塘國小"){
-          $name = $name." ".$ctime;
+      if($created_at == $name || $created_at == "道路" || $created_at =="後塘國小"){
+        $created_at = null;
+        if($created_at == "後塘國小"){
+          $name = $name." ".$created_at;
         }
       }
       // die(var_dump($light->geometry->coordinates));
       $this->lightModel->insert([
         "name" => $name,
-        "ctime" => $ctime,
-        "mtime" => $ctime,
+        "created_at" => $created_at,
+        "mtime" => $created_at,
         "lat" => $light->geometry->coordinates[0],
         "lng" => $light->geometry->coordinates[1],
         "height" => isset($light->geometry->coordinates[2]) ? $light->geometry->coordinates[2] : null,
@@ -74,7 +75,7 @@ class Dev extends MY_Controller {
 
       // $latlng = json_encode($light->geometry->coordinates); 
 
-      // echo "$name $ctime $type $latlng <br />";
+      // echo "$name $created_at $type $latlng <br />";
     }
     // die(var_dump($obj->features));
 

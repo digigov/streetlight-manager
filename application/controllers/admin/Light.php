@@ -67,7 +67,6 @@ class Light extends MY_ADMIN_Controller {
     $lat = $this->input->post("lat");
     $lng = $this->input->post("lng");
 
-
     $ret = $this->lightModel->change_light_loc($id,$lat,$lng);
 
     die(json_encode(["success"=>$ret]));

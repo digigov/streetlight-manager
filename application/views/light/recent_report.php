@@ -10,7 +10,8 @@
   <table class="table table-bordered">
     <tr>
       <td>報修時間</td>    
-      <td>處理情形 </td>
+      <td>地區</td>
+      <td>處理情形</td>
       <td>報修路燈編號</td>
       <td>最後更新時間</td>
     </tr>
@@ -18,10 +19,11 @@
     $report_status = ["0" => "回報確認中" , "1" => "已確認送修" , "2" => "無法確認問題或重複回報","3" => "已修復"];
     foreach($reports as $report){ ?>
     <tr>
-      <td><?=_date_format_utc($report->ctime)?></td>    
+      <td><?=_date_format_utc($report->created_at)?></td>    
+      <td><?=h($report->city)?></td>
       <td><?=h($report_status[$report->status])?></td>
       <td><?=h($report->light_name)?></td>
-      <td><?=_date_format_utc($report->mtime)?></td>   
+      <td><?=_date_format_utc($report->updated_at)?></td>   
     </tr>
     <?php } ?>
   </table>

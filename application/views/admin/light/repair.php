@@ -35,7 +35,7 @@
         <td><?=h($count_status[$light->status])?></td>
         <td><?=h($light->name)?></td>
         <td><?=h($light->town_name)?></td>
-        <td><?=_date_format_utc($light->mtime)?></td>
+        <td><?=_date_format_utc($light->updated_at)?></td>
         <td><label><input <?=$light->status=="2" ?"":"checked"?> class="chks" type="checkbox" name="ids[]" value="<?=h($light->id)?>" /> 選擇</label></td>
       </tr>
       <?php } ?>

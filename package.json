@@ -1,0 +1,37 @@
+{
+  "name": "streetlight-manager",
+  "version": "1.0.0",
+  "description": "Copy the application/config/database.sample.php to application/config/database.php .",
+  "main": "knexfile.js",
+  "dependencies": {
+    "bcrypt": "^1.0.3",
+    "bluebird": "^3.5.1",
+    "cheerio": "^1.0.0-rc.2",
+    "gunzip-file": "^0.1.1",
+    "knex": "^0.13.0",
+    "pg": "^7.3.0",
+    "request": "^2.83.0",
+    "targz": "^1.0.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.24.0",
+    "babel-loader": "^6.4.1",
+    "babel-preset-env": "^1.2.2",
+    "babel-preset-es2015": "^6.6.0",
+    "babel-preset-react": "^6.23.0",
+    "babel-watch": "^2.0.7"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/digigov/streetlight-manager.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/digigov/streetlight-manager/issues"
+  },
+  "homepage": "https://github.com/digigov/streetlight-manager#readme"
+}

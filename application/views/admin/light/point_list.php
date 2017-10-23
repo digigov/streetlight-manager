@@ -42,9 +42,6 @@
 </script>
 <div id="container" class="container">
   <h1 style="text-align:center;"> 路燈清單</h1>
-  <div class="alert alert-info">
-    目前測試中，僅開放鹿草鄉資料。
-  </div>
 
   <p>燈號搜尋：<input type="text" name="search" /></p>
     

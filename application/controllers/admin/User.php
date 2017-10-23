@@ -2,11 +2,17 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class User extends MY_ADMIN_Controller {
-  var $_enable_cookie_write_methods = ["signing"];
+  var $_enable_cookie_write_methods = ["signing","logout"];
 
   public function index(){
 
     $this->load->view('admin/user/index',[]);
+  }
+
+  public function logout(){
+    unset($_SESSION["user"]);
+    return redirect("admin/user/signin");
+    
   }
 
   public function signin(){

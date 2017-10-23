@@ -90,7 +90,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       </ul>
 
       <ul class="nav navbar-nav pull-right">
-        <li><a href="<?=site_url("/admin/light/index")?>">鹿草鄉</a></li>
+        <li><a href="<?=site_url("/admin/light/index")?>"><?=$_SESSION["user"]->city?></a></li>
+        <li><a href="<?=site_url("/admin/user/logout")?>">登出</a></li>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->

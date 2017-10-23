@@ -1,6 +1,12 @@
 .DS_Store
 composer.lock
 
+tmp
+
+node_modules
+knexfile.js
+
+routine/datas
 application/config/constant.php
 application/config/facebook.php
 
