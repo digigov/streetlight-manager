@@ -68,7 +68,7 @@ class LightModel extends CI_Model {
 
   public function get_all_special_point_status(){
     $this->db->select("l.status,l.id");
-    $this->db->where("status","<>",0);
+    $this->db->where("status <>","0");
     $q = $this->db->get($this->_table." l");
 
     return $q->result();

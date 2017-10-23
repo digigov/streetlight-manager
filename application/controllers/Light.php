@@ -36,9 +36,9 @@ class Light extends MY_Controller {
 			$this->cache->save('points', $points, 60 * 60);
 		}
 
-		$status = $this->lightModel->get_all_special_point_status();
+		$all_status = $this->lightModel->get_all_special_point_status();
 		$map = [];
-		foreach($status as $s){
+		foreach($all_status as $s){
 			$map[$s->id] = $s->status;
 		}
 
