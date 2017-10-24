@@ -61,7 +61,7 @@ class LightModel extends CI_Model {
       " COALESCE(tb1.cnt,0) as reporting_count ");
     $this->db->join("town t","l.town_id = t.id");
 
-    $this->db->join("( select light_id,count(*) as cnt from light_report where status = 0  group by light_id ) as tb1","tb1.light_id = l.id");
+    $this->db->join("( select light_id,count(*) as cnt from light_report where status = 0  group by light_id ) as tb1","tb1.light_id = l.id","left outer ");
 
     $q = $this->db->get($this->_table." l");
 
@@ -73,7 +73,7 @@ class LightModel extends CI_Model {
       " COALESCE(tb1.cnt,0) as reporting_count ");
     $this->db->join("town t","l.town_id = t.id");
 
-    $this->db->join("( select light_id,count(*) as cnt from light_report where status = 0  group by light_id ) as tb1","tb1.light_id = l.id");
+    $this->db->join("( select light_id,count(*) as cnt from light_report where status = 0  group by light_id ) as tb1","tb1.light_id = l.id","left outer ");
     
     $this->db->or_where("tb1.cnt > 0 ",null,false);
     $q = $this->db->get($this->_table." l");
