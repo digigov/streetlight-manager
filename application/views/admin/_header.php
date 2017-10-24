@@ -98,6 +98,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           <span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="<?=site_url("/admin/user/line_connect")?>">綁定 line </a></li>
+            <li><a href="<?=site_url("/admin/user/pass")?>">改密碼</a></li>
             <li><a href="<?=site_url("/admin/user/logout")?>">登出</a></li>
           </ul>
         </li>

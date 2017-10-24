@@ -60,5 +60,12 @@ class AccountModel extends CI_Model {
     $this->db->update($this->_table);
     
   }
+
+  public function set_pwd($uid,$pwd){
+
+    $this->db->where("id",$uid);
+    $this->db->set("pwd", password_hash($pwd,PASSWORD_BCRYPT));
+    $this->db->update($this->_table);    
+  }
   
 }

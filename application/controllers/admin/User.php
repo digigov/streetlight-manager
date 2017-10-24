@@ -42,6 +42,27 @@ class User extends MY_ADMIN_Controller {
 
   }
 
+  public function pass(){
+    $status = $this->input->get("status");
+    $this->load->view('admin/user/pass',["status"=>$status]);
+  }
+
+  public function passing(){
+
+    $pwd = $this->input->post("pwd");
+    $pwd2 = $this->input->post("pwd2");
+
+    if($pwd != $pwd2){
+      return redirect(site_url("admin/user/pass?status=2"));
+    }
+
+    $this->load->model("accountModel");
+    $this->accountModel->set_pwd($_SESSION["user"]->id,$pwd);
+    return redirect(site_url("admin/user/pass?status=1"));
+
+
+  }
+
   public function signing(){
 
     $acc = $this->input->post("account");
