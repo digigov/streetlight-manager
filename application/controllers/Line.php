@@ -7,13 +7,14 @@ class Line extends MY_Controller {
     public function line_connect(){
         
         $code = $this->input->get("token");
-
+        $type = $this->input->get("type");
+        
         $URL = 'https://notify-bot.line.me/oauth/authorize?';
         $URL .= 'response_type=code';
         $URL .= '&client_id='.LINE_NOTIFY_CLIENT_ID;
         $URL .= '&redirect_uri='.site_url("line/line_callback");
         $URL .= '&scope=notify';
-        $URL .= '&state='.$code;
+        $URL .= '&state='.$type."___".$code;
         $URL .= '&response_mode=form_post';
         return redirect($URL);
         
@@ -43,10 +44,10 @@ class Line extends MY_Controller {
                 die("綁定失敗");
             }else{
 
+                $tokens = explode("___",$this->input->post('state'));
                 $this->load->database();
                 $this->load->model("accountModel");
-                $this->accountModel->set_user_line_token($this->input->post('state'),
-                    $obj->access_token);
+                $this->accountModel->set_user_line_token($tokens[0],$tokens[1],$obj->access_token);
             }
             
             die("綁定成功");

@@ -53,10 +53,16 @@ class AccountModel extends CI_Model {
     
   }
 
-  public function set_user_line_token($code,$access_token){
+  public function set_user_line_token($type,$code,$access_token){
 
     $this->db->where("line_verify_token",$code);
-    $this->db->set("line_access_token",$access_token);
+
+    if($type=="report"){
+      $this->db->set("line_access_token",$access_token);
+    }else{
+      $this->db->set("line_led_access_token",$access_token);
+    }
+    
     $this->db->update($this->_table);
     
   }

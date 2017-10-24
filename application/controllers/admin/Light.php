@@ -87,18 +87,20 @@ class Light extends MY_ADMIN_Controller {
     foreach($ids as $id){
       $inputs[] = $id;
     }
+    
     $lights = $this->lightModel->get_repair_light_by_ids_city($unCity,$inputs);
 
     if($this->input->post("action") == "1"){
       header('Content-type:application/force-download'); //告訴瀏覽器 為下載 
       header('Content-Transfer-Encoding: Binary'); //編碼方式
       header('Content-Disposition:attachment;filename=維修座標點- '.date("Y.m.d").".gdb"); //檔名 
-
+      
       $this->load->view('xml/gpx_template',
         [
           "city" => $unCity,
           "lights" => $lights
         ] );
+        
     }else if($this->input->post("action") == "3"){
 
       header('Content-type:application/force-download'); //告訴瀏覽器 為下載 

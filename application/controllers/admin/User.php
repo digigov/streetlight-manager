@@ -30,11 +30,24 @@ class User extends MY_ADMIN_Controller {
     $this->load->model("accountModel");
     $token = $this->accountModel->get_line_token($_SESSION["user"]->id);
     $this->load->view('admin/user/line_connect',['user' => $_SESSION["user"],"token" => $token,
-      "code64" => $d->getBarcodePNG(site_url("/line/line_connect?token=".$token), "QRCODE") ,
-      "auth_url" => site_url("/line/line_connect?token=".$token)
+      "code64" => $d->getBarcodePNG(site_url("/line/line_connect?token=".$token."&type=report"), "QRCODE") ,
+      "auth_url" => site_url("/line/line_connect?token=".$token."&type=report")
     ]);
     
   }
+
+  public function line_bind2_connect(){
+      require(__DIR__."/../../../vendor/autoload.php");
+  
+      $this->load->database();
+      $this->load->model("accountModel");
+      $token = $this->accountModel->get_line_token($_SESSION["user"]->id);
+      $this->load->view('admin/user/line_connect',['user' => $_SESSION["user"],"token" => $token,
+        "code64" => $d->getBarcodePNG(site_url("/line/line_connect?token=".$token."&type=led"), "QRCODE") ,
+        "auth_url" => site_url("/line/line_connect?token=".$token."&type=led")
+      ]);
+      
+    }
 
   public function signin(){
 
