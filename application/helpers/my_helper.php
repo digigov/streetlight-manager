@@ -1,6 +1,9 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+require(__DIR__."/../../vendor/autoload.php");
+use GuzzleHttp\Client;
+
 
 function array_first_item($arr){
   return count($arr) > 0 ? $arr[0] : null;
@@ -216,5 +219,15 @@ function fetch_url($url){
 }
 
 
+function send_message($token,$msg){
 
-
+  $client = new Client();
+  $res = $client->request('POST', 'https://notify-api.line.me/api/notify', [
+      'form_params' => [
+          "message" => $msg
+      ],
+      'headers' => [
+          "Authorization"=>"Bearer ".$token
+      ]
+  ]);
+}

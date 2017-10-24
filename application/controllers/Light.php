@@ -105,6 +105,19 @@ class Light extends MY_Controller {
 
 		$report_id = $this->lightModel->insert_report($data);
 
+		$record = $this->lightModel->get_city($point_id);
+
+		$this->load->model("accountModel");
+		$users = $this->accountModel->get_line_by_city($record->city);
+
+		foreach($users as $u){
+			send_message($u->line_access_token,"有新的路燈報修回報，詳細資料：\n".
+				"\n報修人：".$data["name"]."\n路燈名稱:".$record->name.
+				"\n在 google map 顯示: https://www.google.com.tw/maps?q=".$record->lat.",".$record->lng.
+				"\n網址:".site_url("/admin/user")
+			);
+		}
+
 		redirect("light/reported/".$report_id);
 		session_write_close();
 	}

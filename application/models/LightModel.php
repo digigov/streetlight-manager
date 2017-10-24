@@ -83,6 +83,14 @@ class LightModel extends CI_Model {
     return array_first_item($this->db->get($this->_table." l")->result());
   }
 
+
+  public function get_city($id){
+    $this->db->select("l.*,t.city");
+    $this->db->join("town t","l.town_id = t.id");
+    $this->db->where("l.id",$id);
+    return array_first_item($this->db->get($this->_table." l")->result());
+  }
+
   public function get_repair_light_by_city($city){
     $this->db->select("l.status,l.lat,l.lng,l.height,l.id,l.name,t.city,t.name as town_name,l.town_id,l.updated_at");
     $this->db->join("town t","l.town_id = t.id");

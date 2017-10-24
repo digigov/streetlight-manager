@@ -57,6 +57,7 @@ class Light extends MY_ADMIN_Controller {
       ] );
   }
 
+
   public function set_report_status($report,$status){
     $this->lightModel->set_report_status($report,$status);
 

@@ -23,5 +23,42 @@ class AccountModel extends CI_Model {
 
   }
 
+  public function get_line_token($uid){
+
+    $this->db->where("id",$uid);
+    $q= $this->db->get($this->_table);
+    $user = array_first_item($q->result());
+    if($user->line_verify_token != null){
+      return $user->line_verify_token;
+    }
+
+    $hash = uniqid();
+    $token = password_hash($hash,PASSWORD_BCRYPT);
+    
+    $this->db->where("id",$uid);
+    $this->db->set("line_verify_token",$token);
+    $this->db->update($this->_table);
+
+    
+    return $token;
+
+  }
+
+  public function get_line_by_city($city){
+    $this->db->where("line_access_token is not null",null,false);
+    $this->db->where("city",$city);
+    $q = $this->db->get($this->_table);
+
+    return $q->result();
+    
+  }
+
+  public function set_user_line_token($code,$access_token){
+
+    $this->db->where("line_verify_token",$code);
+    $this->db->set("line_access_token",$access_token);
+    $this->db->update($this->_table);
+    
+  }
   
 }
