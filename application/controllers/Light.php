@@ -89,6 +89,27 @@ class Light extends MY_Controller {
 		session_write_close();
 	}
 
+	public function check($point_id){
+		$light = $this->lightModel->get($point_id);
+
+
+		$this->load->view('light/check',
+		[
+			"points" => [$light]
+		] );
+
+		
+		
+		session_write_close();
+
+	}
+
+	public function fixed($point_id){
+		$light = $this->lightModel->get($point_id);
+		
+		$lights = $this->lightModel->fix_light_by_ids($light->city,[$point_id]);
+		die("已經設定完成，感謝您的回報！");
+	}
 
 	public function reporting(){
 		$point_id = $this->input->post("point_id");

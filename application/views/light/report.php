@@ -25,7 +25,7 @@
   </div>
 
 
-  <h2>所屬區域：<?=h($point->city)?> &gt; <?=h($point->town_name)?></h2>
+  <h2>所屬區域：<?=h($point->city)?> </h2>
 
 
   <h3>路燈位置</h3>

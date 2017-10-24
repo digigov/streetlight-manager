@@ -75,11 +75,10 @@ class Light extends MY_ADMIN_Controller {
           "\n\n修理好後請點此處回報: ".site_url("light/check/".$light->id)
         );
       }
-
     }
-
     redirect("admin/light/index");
   }
+
 
   public function change_loc($id){
     $lat = $this->input->post("lat");
