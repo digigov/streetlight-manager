@@ -203,13 +203,13 @@ class LightModel extends CI_Model {
     if($status == "1" || $status == "2"){
 
       $this->db->set("status",1);
-      $this->db->set("updated_at","now()",false);
+      $this->db->set("updated_at"," now() at time zone 'utc'",false);
       $this->db->where("status",0);
       $this->db->where("light_id",$q->light_id);
       $this->db->update($this->_table_light_report);
 
       $this->db->set("status",intval($status));
-      $this->db->set("updated_at","now()",false);
+      $this->db->set("updated_at"," now() at time zone 'utc'",false);
       $this->db->where("id",$q->light_id);
       $this->db->update($this->_table);
       
@@ -217,7 +217,7 @@ class LightModel extends CI_Model {
 
     }else if($status == "0"){
       $this->db->set("status",2);
-      $this->db->set("updated_at","now()",false);
+      $this->db->set("updated_at"," now() at time zone 'utc'",false);
       $this->db->where("status",0);
       $this->db->where("light_id",$q->light_id);
       $this->db->update($this->_table_light_report);
