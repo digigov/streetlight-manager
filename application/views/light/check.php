@@ -23,19 +23,17 @@
   <div class="alert alert-info">
   </div>
 
-  <h2>所屬區域：<?=h($point->city)?></h2>
+  <h2>所屬區域：<?=h($points[0]->city)?></h2>
 
   <h3>路燈位置</h3>
   <div id="mapid" style=" height: 300px;width:100%;max-width:400px;"></div>
   <p>&nbsp;</p>
 
   <div class="row col-md-8 col-xs-12">
-
     <div class="row">
-      <a class="btn btn-primary" href="<?=site_url("/light/fixed/".$point->id)?>" >已經修復</a>
+      <a class="btn btn-primary" href="<?=site_url("/light/fixed/".$points[0]->id)?>" >已經修復</a>
       <a class="btn btn-default"  href="<?=site_url("/")?>" >取消</a>
     </div>
-    
   </div>
   <p class="clearfix"></p>
 
