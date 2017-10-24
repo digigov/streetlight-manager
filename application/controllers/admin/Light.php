@@ -71,8 +71,8 @@ class Light extends MY_ADMIN_Controller {
       $users = $this->accountModel->get_line_by_city($light->city);
 
       foreach($users as $u){
-        send_message($u->line_led_access_token,"路燈報修回報，路燈編號:".$record->name.
-          "\n在 google map 顯示: https://www.google.com.tw/maps?q=".$record->lat.",".$record->lng
+        send_message($u->line_led_access_token,"路燈報修回報，路燈編號:".$light->name.
+          "\n在 google map 顯示: https://www.google.com.tw/maps?q=".$light->lat.",".$light->lng
         );
       }
 
