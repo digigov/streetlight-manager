@@ -49,7 +49,9 @@
       <td><?=h($report->comment)?></td>
       <td>
          <?php if($report->status =="0"){ ?>
+         <?php if($_SESSION["user"]->city == "鹿草鄉"){ ?>
         <a href="<?=site_url("admin/light/set_report_status/".$report->id."/1")?>" class="btn btn-default">請廠商處理</a>
+         <?php } ?>
         <a href="<?=site_url("admin/light/set_report_status/".$report->id."/2")?>" class="btn btn-default">請縣府LED廠商處理</a>
         <a href="<?=site_url("admin/light/set_report_status/".$report->id."/0")?>" class="btn btn-default">設為無法確認問題</a>
         <?php } ?>

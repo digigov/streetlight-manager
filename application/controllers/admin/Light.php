@@ -61,6 +61,23 @@ class Light extends MY_ADMIN_Controller {
   public function set_report_status($report,$status){
     $this->lightModel->set_report_status($report,$status);
 
+
+    if($status == 2){
+      $report = $this->lightModel->get_report_status($report);
+      $light = $this->lightModel->get_city($report->light_id);
+
+
+      $this->load->model("accountModel");
+      $users = $this->accountModel->get_line_by_city($record->city);
+
+      foreach($users as $u){
+        send_message($u->line_led_access_token,"路燈報修回報，路燈編號:".$record->name.
+          "\n在 google map 顯示: https://www.google.com.tw/maps?q=".$record->lat.",".$record->lng
+        );
+      }
+
+    }
+
     redirect("admin/light/index");
   }
 

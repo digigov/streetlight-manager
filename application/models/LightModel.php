@@ -184,6 +184,14 @@ class LightModel extends CI_Model {
   }
 
 
+
+  public function get_report_status($report_id){
+    $this->db->where("id",$report_id);
+    $q = array_first_item($this->db->get($this->_table_light_report)->result());
+    
+    return $q;
+  }
+
   public function set_report_status($report_id,$status){
     $this->db->where("id",$report_id);
     $q = array_first_item($this->db->get($this->_table_light_report)->result());
@@ -191,7 +199,6 @@ class LightModel extends CI_Model {
     if($q == null){
       return null;
     }
-
 
     if($status == "1" || $status == "2"){
 
