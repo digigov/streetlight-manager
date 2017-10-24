@@ -39,11 +39,10 @@ class Light extends MY_ADMIN_Controller {
     $unCity = $_SESSION["user"]->city;
     $reports =  $this->lightModel->get_city_reports($unCity);
 
-    $this->load->view('admin/light/reports',
-      [
+    $this->load->view('admin/light/reports',[
         "city" => $unCity,
         "reports" => $reports
-      ] );
+    ]);
   }
 
   public function repair(){
@@ -71,8 +70,9 @@ class Light extends MY_ADMIN_Controller {
       $users = $this->accountModel->get_line_by_city($light->city);
 
       foreach($users as $u){
-        send_message($u->line_led_access_token,"路燈報修回報，路燈編號:".$light->name.
-          "\n在 google map 顯示: https://www.google.com.tw/maps?q=".$light->lat.",".$light->lng
+        send_message($u->line_led_access_token,$light->city." 路燈報修回報，路燈編號:".$light->name.
+          "\n在 google map 顯示: https://www.google.com.tw/maps?q=".$light->lat.",".$light->lng.
+          "\n\n修理好後請點此處回報: ".site_url("light/check/".$light->id)
         );
       }
 

@@ -216,6 +216,7 @@ class LightModel extends CI_Model {
       $this->db->insert("light_log",["light_id"=>$q->light_id,"text"=>"已確認報修(".($status=="1" ?"公所廠商":"縣府廠商").")"]);
 
     }else if($status == "0"){
+      
       $this->db->set("status",2);
       $this->db->set("updated_at"," now() at time zone 'utc'",false);
       $this->db->where("status",0);
@@ -223,6 +224,7 @@ class LightModel extends CI_Model {
       $this->db->update($this->_table_light_report);
 
       $this->db->insert("light_log",["light_id"=>$q->light_id,"text"=>"確認為非報修"]);
+      
     }
 
   }
