@@ -97,7 +97,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           <a class="dropdown-toggle" data-toggle="dropdown" href="#"><?=h($_SESSION["user"]->acc)?>
           <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="<?=site_url("/admin/user/line_connect")?>">綁定 line </a></li>
+            <li><a href="<?=site_url("/admin/user/line_connect")?>">綁定 line 回報通知</a></li>
+            <li><a href="<?=site_url("/admin/user/line_bind2_connect")?>">綁定 line LED 回報</a></li>
             <li><a href="<?=site_url("/admin/user/pass")?>">改密碼</a></li>
             <li><a href="<?=site_url("/admin/user/logout")?>">登出</a></li>
           </ul>
