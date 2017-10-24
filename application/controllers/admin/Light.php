@@ -68,7 +68,7 @@ class Light extends MY_ADMIN_Controller {
 
 
       $this->load->model("accountModel");
-      $users = $this->accountModel->get_line_by_city($record->city);
+      $users = $this->accountModel->get_line_by_city($light->city);
 
       foreach($users as $u){
         send_message($u->line_led_access_token,"路燈報修回報，路燈編號:".$record->name.
