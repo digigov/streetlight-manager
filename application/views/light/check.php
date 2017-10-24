@@ -30,10 +30,8 @@
   <p>&nbsp;</p>
 
   <div class="row col-md-8 col-xs-12">
-    <div class="row">
-      <a class="btn btn-primary" href="<?=site_url("/light/fixed/".$points[0]->id)?>" >已經修復</a>
-      <a class="btn btn-default"  href="<?=site_url("/")?>" >取消</a>
-    </div>
+    <a class="btn btn-primary" href="<?=site_url("/light/fixed/".$points[0]->id)?>" >已經修復</a>
+    <a class="btn btn-default"  href="<?=site_url("/")?>" >取消</a>
   </div>
   <p class="clearfix"></p>
 
