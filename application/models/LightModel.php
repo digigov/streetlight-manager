@@ -57,9 +57,11 @@ class LightModel extends CI_Model {
 
   public function get_all_for_map(){
 
-    $this->db->select("l.status,l.lat,l.lng,l.id,l.name,t.city,t.name as town_name,l.town_id,
-      (select count(*) from light_report where status = 0 and light_id = l.id ) as reporting_count ");
+    $this->db->select("l.status,l.lat,l.lng,l.id,l.name,t.city,t.name as town_name,l.town_id, ".
+      " COALESCE(tb1.cnt,0) as reporting_count ");
     $this->db->join("town t","l.town_id = t.id");
+
+    $this->db->join("( select light_id,count(*) as cnt from light_report where status = 0  group by light_id ) as tb1","tb1.light_id = l.id");
 
     $q = $this->db->get($this->_table." l");
 
@@ -67,10 +69,13 @@ class LightModel extends CI_Model {
   }
 
   public function get_all_special_point_status(){
-    $this->db->select("l.status,l.id,
-    (select count(*) from light_report where status = 0 and light_id = l.id ) as reporting_count");
-    $this->db->where("status <>","0");
-    $this->db->or_where("(select count(*) from light_report where status = 0 and light_id = l.id ) > 0 ",null,false);
+    $this->db->select("l.status,l.lat,l.lng,l.id,l.name,t.city,t.name as town_name,l.town_id, ".
+      " COALESCE(tb1.cnt,0) as reporting_count ");
+    $this->db->join("town t","l.town_id = t.id");
+
+    $this->db->join("( select light_id,count(*) as cnt from light_report where status = 0  group by light_id ) as tb1","tb1.light_id = l.id");
+    
+    $this->db->or_where("tb1.cnt > 0 ",null,false);
     $q = $this->db->get($this->_table." l");
 
     return $q->result();
