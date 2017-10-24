@@ -39,6 +39,11 @@ class User extends MY_ADMIN_Controller {
   public function line_bind2_connect(){
       require(__DIR__."/../../../vendor/autoload.php");
   
+
+      $d = new DNS2D();
+      $d->setStorPath(__DIR__."/../../cache/");
+
+      
       $this->load->database();
       $this->load->model("accountModel");
       $token = $this->accountModel->get_line_token($_SESSION["user"]->id);
