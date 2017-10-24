@@ -39,14 +39,16 @@ class Light extends MY_Controller {
 		$all_status = $this->lightModel->get_all_special_point_status();
 		$map = [];
 		foreach($all_status as $s){
-			$map[$s->id] = $s->status;
+			$map[$s->id] = $s;
 		}
 
 		foreach($points as $p){
 			if(!isset($map[$p->id])){
 				$p->status = 0;
+				$p->reporting_count = 0;
 			}else{
-				$p->status = $map[$p->id];
+				$p->status = $map[$p->id]->status;
+				$p->reporting_count = $map[$p->id]->reporting_count;
 			}
 		}
 
