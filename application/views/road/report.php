@@ -60,7 +60,7 @@
         </tr> -->
         <tr>
           <td>位置</td>
-          <td><p>請簡要描述坑洞所在的位置（ex. oo路與yy路路口，附近地標...etc）</p>
+          <td><p>請簡要描述坑洞所在的位置（如 oo路與yy路路口，附近地標等）</p>
             <textarea tabindex="4"  name="location"  style='width:100%' rows="5" ></textarea>
           </td>
         </tr> 

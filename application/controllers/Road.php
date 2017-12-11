@@ -24,6 +24,7 @@ class Road extends MY_Controller {
 		$target_filename = uniqid().".".$imageFileType;
 		$target_file = $target_dir . $target_filename;
 		$uploadOk = 1;
+                die(var_dump($_FILES["file"));
 		$check = getimagesize($_FILES["file"]["tmp_name"]);
 		if($check === false) {
 			die("檔案錯誤");
