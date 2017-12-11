@@ -53,6 +53,8 @@ $route['default_controller'] = 'light';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
+$route["r/(:any)"] = "light/report_multiple";
+
 $route["about"] = "welcome/about";
 
 

@@ -89,6 +89,14 @@ class Light extends MY_Controller {
 		session_write_close();
 	}
 
+
+	public function report_multiple(){
+
+		$this->load->view('light/report_multiple',[] );
+		session_write_close();
+	}
+		
+
 	public function check($point_id){
 		$light = $this->lightModel->get($point_id);
 

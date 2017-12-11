@@ -7,6 +7,8 @@ node_modules
 knexfile.js
 
 routine/datas
+
+application/uploads
 application/config/constant.php
 application/config/facebook.php
 
